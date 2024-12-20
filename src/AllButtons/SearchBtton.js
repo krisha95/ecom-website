@@ -3,7 +3,7 @@ import { FaSearch } from "react-icons/fa";
 import { DataContext } from "../hooks/DataContext";
 
 const SearchButton = () => {
-  const { setSearchTermState, searchTermState } = useContext(DataContext);
+  const { setSearchTermState} = useContext(DataContext);
 
   const [searchTerm, setSearchTerm] = useState("");
 

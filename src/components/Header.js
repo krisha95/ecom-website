@@ -4,6 +4,7 @@ import { BsFillCartPlusFill } from "react-icons/bs";
 import { CiHeart } from "react-icons/ci";
 import { DataContext } from "../hooks/DataContext";
 import SearchButton from "../AllButtons/SearchBtton";
+import Catagorys from "../AllButtons/Catagorys";
 
 const Header = () => {
   const { productdata } = useContext(DataContext);
@@ -14,132 +15,9 @@ const Header = () => {
         <h1 className="text-3xl font-bold text-black">
           <NavLink to="/">MyStore</NavLink>
         </h1>
-        <nav className="flex space-x-8">
-          <div className="group relative">
-            <NavLink to="/women" className="hover:text-pink-500">
-              Women
-            </NavLink>
-            <div className="absolute hidden group-hover:block bg-white shadow-lg p-4">
-              <NavLink to="/women/beauty" className="block py-1">
-                Beauty
-              </NavLink>
-
-              <NavLink to="/women/bag" className="block py-1">
-                Bag
-              </NavLink>
-              <NavLink to="/women/dress" className="block py-1">
-                Dress
-              </NavLink>
-              <NavLink to="/women/watch" className="block py-1">
-                Watch
-              </NavLink>
-              <NavLink to="/women/shoes" className="block py-1">
-                Shoes
-              </NavLink>
-            </div>
-          </div>
-          <div className="group relative">
-            <NavLink to="/men" className="hover:text-pink-500">
-              Men
-            </NavLink>
-            <div className="absolute hidden group-hover:block bg-white shadow-lg p-4">
-              <NavLink to="/men/grooming" className="block py-1">
-                Grooming
-              </NavLink>
-              <NavLink to="/men/clothing" className="block py-1">
-                Clothing
-              </NavLink>
-              <NavLink to="/men/shoes" className="block py-1">
-                Shoes
-              </NavLink>
-              <NavLink to="/men/watch" className="block py-1">
-                Watch
-              </NavLink>
-              <NavLink to="/men/bag" className="block py-1">
-                Bag
-              </NavLink>
-            </div>
-          </div>
-          <div className="group relative">
-            <NavLink to="/home-living" className="hover:text-pink-500">
-              Home & Living
-            </NavLink>
-            <div className="absolute hidden group-hover:block bg-white shadow-lg p-4">
-              <NavLink to="/home-living/shop" className="block py-1">
-                Shop
-              </NavLink>
-              <NavLink to="/home-living/sofa" className="block py-1">
-                Sofa
-              </NavLink>
-              <NavLink to="/home-living/bed" className="block py-1">
-                Bed
-              </NavLink>
-              <NavLink to="/home-living/home-decor" className="block py-1">
-                Home Decor
-              </NavLink>
-              <NavLink to="/home-living/kitchen" className="block py-1">
-                Kitchen
-              </NavLink>
-              <NavLink to="/home-living/lighting" className="block py-1">
-                Lighting
-              </NavLink>
-            </div>
-          </div>
-          <div className="group relative">
-            <NavLink to="/electronics" className="hover:text-pink-500">
-              Electronics
-            </NavLink>
-            <div className="absolute hidden group-hover:block bg-white shadow-lg p-4">
-              <NavLink to="/electronics/laptop" className="block py-1">
-                Laptop
-              </NavLink>
-              <NavLink to="/electronics/mobile" className="block py-1">
-                Mobile
-              </NavLink>
-              <NavLink to="/electronics/camera" className="block py-1">
-                Camera
-              </NavLink>
-              <NavLink to="/electronics/headphone" className="block py-1">
-                Headphone
-              </NavLink>
-              <NavLink to="/electronics/speakers" className="block py-1">
-                Speakers
-              </NavLink>
-              <NavLink to="/electronics/accessories" className="block py-1">
-                Accessories
-              </NavLink>
-            </div>
-          </div>
-          <div className="group relative">
-            <NavLink to="/game" className="hover:text-pink-500">
-              Game
-            </NavLink>
-            <div className="absolute hidden group-hover:block bg-white shadow-lg p-4">
-              <NavLink to="/game/cricket" className="block py-1">
-                Cricket
-              </NavLink>
-              <NavLink to="/game/football" className="block py-1">
-                Football
-              </NavLink>
-              <NavLink to="/game/badminton" className="block py-1">
-                Badminton
-              </NavLink>
-            </div>
-          </div>
-          <div className="group relative">
-            <NavLink to="/ride" className="hover:text-pink-500">
-              Ride
-            </NavLink>
-            <div className="absolute hidden group-hover:block bg-white shadow-lg p-4">
-              <NavLink to="/ride/car" className="block py-1">
-                Car
-              </NavLink>
-              <NavLink to="/ride/bike" className="block py-1">
-                Bike
-              </NavLink>
-            </div>
-          </div>
-        </nav>
+        <div className="mx-6">
+          <Catagorys />
+        </div>
         <div className="flex-1 mx-6">
           <SearchButton />
         </div>

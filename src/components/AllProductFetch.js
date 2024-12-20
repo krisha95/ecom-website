@@ -11,6 +11,7 @@ const AllProductFetch = () => {
     wishlistdata,
     searchTermState,
     setProductSelectDetails,
+    categories
   } = useContext(DataContext);
   const [productdetails, setProductDetails] = useState([]);
   const navigate = useNavigate();
@@ -50,7 +51,7 @@ const AllProductFetch = () => {
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-4 ">
-      {(searchTermState.length ? searchTermState : productdetails)?.map(
+      {(categories.length ? categories : searchTermState.length ? searchTermState : productdetails)?.map(
         (v, index) => (
           <div
             key={index}
