@@ -21,7 +21,7 @@ const Catagorys = () => {
           </NavLink>
           <div className="absolute hidden group-hover:block bg-white shadow-lg p-4">
             <NavLink
-              to="/"
+              to="/category/beauty"
               className="block py-1"
               onClick={() => fetchCatagorydata("beauty")}
             >
@@ -29,30 +29,31 @@ const Catagorys = () => {
             </NavLink>
 
             <NavLink
-              to="/"
+              to="/category/womens-bags"
               className="block py-1"
               onClick={() => fetchCatagorydata("womens-bags")}
             >
               Bag
             </NavLink>
             <NavLink
-              to="/"
+              to="/category/womens-dresses"
               className="block py-1"
               onClick={() => fetchCatagorydata("womens-dresses" && "tops")}
             >
               Dress
             </NavLink>
+      
             <NavLink
-              to="/"
+              to="/category/womens-jewellery"
               className="block py-1"
               onClick={() =>
-                fetchCatagorydata("womens-watchess" && "womens-jewellery")
+                fetchCatagorydata("womens-jewellery")
               }
             >
-              Watch
+              Jewellery
             </NavLink>
             <NavLink
-              to="/"
+              to="/category/womens-shoes"
               className="block py-1"
               onClick={() => fetchCatagorydata("womens-shoes")}
             >
@@ -66,21 +67,21 @@ const Catagorys = () => {
           </NavLink>
           <div className="absolute hidden group-hover:block bg-white shadow-lg p-4">
             <NavLink
-              to="/"
+              to="/category/mens-shirts"
               className="block py-1"
               onClick={() => fetchCatagorydata("mens-shirts")}
             >
               Clothing
             </NavLink>
             <NavLink
-              to="/"
+              to="/category/mens-shoes"
               className="block py-1"
               onClick={() => fetchCatagorydata("mens-shoes")}
             >
               Shoes
             </NavLink>
             <NavLink
-              to="/"
+              to="/category/mens-watches"
               className="block py-1"
               onClick={() => fetchCatagorydata("mens-watches")}
             >
@@ -94,21 +95,21 @@ const Catagorys = () => {
           </NavLink>
           <div className="absolute hidden group-hover:block bg-white shadow-lg p-4">
             <NavLink
-              to="/"
+              to="/category/skin-care"
               className="block py-1"
               onClick={() => fetchCatagorydata("skin-care")}
             >
               Skin Care
             </NavLink>
             <NavLink
-              to="/"
+              to="/category/sunglasses"
               className="block py-1"
               onClick={() => fetchCatagorydata("sunglasses")}
             >
               Sunglasses
             </NavLink>
             <NavLink
-              to="/"
+              to="/category/fragrances"
               className="block py-1"
               onClick={() => fetchCatagorydata("fragrances")}
             >
@@ -122,29 +123,25 @@ const Catagorys = () => {
           </NavLink>
           <div className="absolute hidden group-hover:block bg-white shadow-lg p-4">
             <NavLink
-              to="/"
+              to="/category/furniture"
               className="block py-1"
               onClick={() => fetchCatagorydata("furniture")}
             >
               Sofa
             </NavLink>
             <NavLink
-              to="/"
+              to="/category/bed"
               className="block py-1"
               onClick={() => fetchCatagorydata("bed")}
             >
               Bed
             </NavLink>
             <NavLink
-              to="/"
+              to="/category/home-decoration"
               className="block py-1"
               onClick={() => fetchCatagorydata("home-decoration")}
             >
               Home Decor
-            </NavLink>
-
-            <NavLink to="/" className="block py-1">
-              Lighting
             </NavLink>
           </div>
         </div>
@@ -154,14 +151,14 @@ const Catagorys = () => {
           </NavLink>
           <div className="absolute hidden group-hover:block bg-white shadow-lg p-4">
             <NavLink
-              to="/"
+              to="/category/kitchen-accessories"
               className="block py-1"
               onClick={() => fetchCatagorydata("kitchen-accessories")}
             >
               Kitchen
             </NavLink>
             <NavLink
-              to="/"
+              to="/category/groceries"
               className="block py-1"
               onClick={() => fetchCatagorydata("groceries")}
             >
@@ -175,28 +172,28 @@ const Catagorys = () => {
           </NavLink>
           <div className="absolute hidden group-hover:block bg-white shadow-lg p-4">
             <NavLink
-              to="/"
+              to="/category/laptops"
               className="block py-1"
               onClick={() => fetchCatagorydata("laptops")}
             >
               Laptop
             </NavLink>
             <NavLink
-              to="/"
+              to="/category/smartphones"
               className="block py-1"
               onClick={() => fetchCatagorydata("smartphones")}
             >
               Mobile
             </NavLink>
             <NavLink
-              to="/"
+              to="/category/tablets"
               className="block py-1"
               onClick={() => fetchCatagorydata("tablets")}
             >
-              Mobile
+              Tab
             </NavLink>
             <NavLink
-              to="/"
+              to="/category/mobile-accessories"
               className="block py-1"
               onClick={() => fetchCatagorydata("mobile-accessories")}
             >
@@ -210,7 +207,7 @@ const Catagorys = () => {
           </NavLink>
           <div className="absolute hidden group-hover:block bg-white shadow-lg p-4">
             <NavLink
-              to="/"
+              to="/category/sports-accessories"
               className="block py-1"
               onClick={() => fetchCatagorydata("sports-accessories")}
             >
@@ -224,14 +221,14 @@ const Catagorys = () => {
           </NavLink>
           <div className="absolute hidden group-hover:block bg-white shadow-lg p-4">
             <NavLink
-              to="/"
+              to="/category/vehicle"
               className="block py-1"
               onClick={() => fetchCatagorydata("vehicle")}
             >
               Car
             </NavLink>
             <NavLink
-              to="/"
+              to="/category/motorcycle"
               className="block py-1"
               onClick={() => fetchCatagorydata("motorcycle")}
             >
