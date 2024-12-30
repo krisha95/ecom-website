@@ -8,20 +8,14 @@ const LoginPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    handleLogin();
-  };
 
-  const handleLogin = () => {
-    const users = JSON.parse(localStorage.getItem("users")) || [];
-    const user = users.find(
-      (user) => user.email === email && user.password === password
-    );
-
-    if (user) {
-      localStorage.setItem("currentUser", JSON.stringify(user));
-      navigate("/");
-    } else {
-      alert("Invalid email or password.");
+    // Here, you can validate the email and password as needed
+    if (email && password) {
+      // Set the authentication flag in localStorage
+      localStorage.setItem("isAuth", "true");
+      localStorage.setItem("email", email); // Optional: Store email for later use
+      // localStorage.setItem("password", password); // Optional: Store password if needed
+      navigate("/"); // Redirect to home page after successful login
     }
   };
 
@@ -46,7 +40,7 @@ const LoginPage = () => {
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md  "
+              className="w-full px-4 py-2 border border-gray-300 rounded-md"
               required
             />
           </div>

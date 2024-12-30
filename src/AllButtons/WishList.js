@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import { DataContext } from "../hooks/DataContext";
 import { RxCross1 } from "react-icons/rx";
+import { NavLink } from "react-router-dom";
 
 const WishList = () => {
   const { setWishlistdata, wishlistdata, setProductdata } =
@@ -8,6 +9,10 @@ const WishList = () => {
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  const isAuth = localStorage.getItem("isAuth");
+
+  console.log("isAuth", isAuth);
 
   const handleRemoveWishlistItem = async (id) => {
     setIsLoading(true);
@@ -33,6 +38,21 @@ const WishList = () => {
     );
     setProductdata((prev) => [...prev, item]);
   };
+
+  if (!isAuth) {
+    return (
+      <div className="flex flex-col items-center justify-center h-screen text-center">
+        <p className="text-gray-500 text-lg">
+          Please login to view your wishlist.
+        </p>
+        <NavLink to="/login" className="flex justify-center items-center mt-8 ">
+          <button className="border border-rose-500 rounded-md  px-5 py-3">
+            LOGIN
+          </button>
+        </NavLink>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-100 py-8 px-4">
