@@ -9,13 +9,11 @@ const LoginPage = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Here, you can validate the email and password as needed
     if (email && password) {
-      // Set the authentication flag in localStorage
       localStorage.setItem("isAuth", "true");
-      localStorage.setItem("email", email); // Optional: Store email for later use
-      // localStorage.setItem("password", password); // Optional: Store password if needed
-      navigate("/"); // Redirect to home page after successful login
+      localStorage.setItem("email", email);
+
+      navigate("/");
     }
   };
 

@@ -37,7 +37,6 @@ const Footer = () => {
           </ul>
         </div>
 
-        {/* Customer Policies Section */}
         <div className="space-y-4">
           <h3 className="font-bold text-gray-800 uppercase text-sm">
             Customer Policies
@@ -67,7 +66,6 @@ const Footer = () => {
           </ul>
         </div>
 
-        {/* Experience App Section */}
         <div className="space-y-4">
           <h3 className="font-bold text-gray-800 uppercase text-sm">
             Experience Myntra App
