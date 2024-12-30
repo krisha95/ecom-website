@@ -2,11 +2,11 @@ import React, { useEffect, useState, useContext } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { DataContext } from "../hooks/DataContext";
 import { CiHeart } from "react-icons/ci";
-import { FaArrowRight } from "react-icons/fa";
+import Slider from "react-slick";
 
 const CategoryPage = () => {
   const { categoryName } = useParams();
-  const { setCategories } = useContext(DataContext); 
+  const { setCategories } = useContext(DataContext);
   const [products, setProducts] = useState([]);
   const {
     productdata,
@@ -18,6 +18,7 @@ const CategoryPage = () => {
     categories,
   } = useContext(DataContext);
   const [productdetails, setProductDetails] = useState([]);
+  const [hoveredIndex, setHoveredIndex] = useState(null); // Track hovered index
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -36,11 +37,13 @@ const CategoryPage = () => {
   };
 
   const handleBtnWhislist = (data) => {
-    setWishlistdata((prodata) =>
-      prodata.some((item) => item.id === data.id)
-        ? prodata.filter((item) => item.id !== data.id)
-        : [...prodata, data]
-    );
+    setWishlistdata((prevWishlist) => {
+      if (prevWishlist.some((item) => item.id === data.id)) {
+        return prevWishlist.filter((item) => item.id !== data.id);
+      } else {
+        return [...prevWishlist, data];
+      }
+    });
   };
 
   const handleProductDetails = (data) => {
@@ -51,6 +54,7 @@ const CategoryPage = () => {
   const handleGoToCart = () => {
     navigate("/cart");
   };
+
   useEffect(() => {
     const fetchCategoryData = async () => {
       try {
@@ -59,7 +63,7 @@ const CategoryPage = () => {
         );
         const data = await response.json();
         setProducts(data.products);
-        setCategories(data.products); 
+        setCategories(data.products);
       } catch (error) {
         console.error("Error fetching category data:", error);
       }
@@ -69,7 +73,7 @@ const CategoryPage = () => {
   }, [categoryName, setCategories]);
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-4 ">
+    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-4">
       {(categories.length
         ? categories
         : searchTermState.length
@@ -79,10 +83,21 @@ const CategoryPage = () => {
         <div
           key={index}
           className="bg-white shadow-md rounded-lg overflow-hidden relative"
+          onMouseEnter={() => {
+            console.log("Hovered Index:", index); // Debug log
+            setHoveredIndex(index);
+          }}
+          onMouseLeave={() => {
+            console.log("Mouse Left:", index); // Debug log
+            setHoveredIndex(null);
+          }}
         >
           <button
-            className="flex absolute right-2 top-2"
-            onClick={() => handleBtnWhislist(v)}
+            className="flex absolute right-2 top-2 z-10"
+            onClick={(e) => {
+              e.preventDefault();
+              handleBtnWhislist(v);
+            }}
           >
             {productdata && (
               <CiHeart
@@ -96,12 +111,34 @@ const CategoryPage = () => {
               />
             )}
           </button>
-          <img
-            src={v.thumbnail}
-            alt={v.title}
-            className="w-full h-48 object-contain"
-            onClick={() => handleProductDetails(v)}
-          />
+
+          <div className="relative group cursor-pointer">
+            <Slider
+              key={
+                hoveredIndex === index ? `${index}-hover` : `${index}-static`
+              } // Force re-render
+              dots={true}
+              infinite={true}
+              speed={500}
+              slidesToShow={1}
+              slidesToScroll={1}
+              arrows={true}
+              autoplay={hoveredIndex === index} // Only autoplay for hovered index
+              autoplaySpeed={2000}
+            >
+              {v.images.map((image, i) => (
+                <div key={i}>
+                  <img
+                    src={image}
+                    alt={v.title}
+                    className="w-full h-48 object-contain"
+                    onClick={() => handleProductDetails(v)}
+                  />
+                </div>
+              ))}
+            </Slider>
+          </div>
+
           <div className="p-4">
             <h2 className="text-lg font-semibold text-gray-800 truncate">
               {v.title}
@@ -113,15 +150,12 @@ const CategoryPage = () => {
             </div>
             <div className="mt-4 space-y-2">
               {productdata.some((item) => item.id === v.id) ? (
-                <>
-                  <button
-                    className="text-rose-500 border  w-full px-4 py-2 rounded-lg"
-                    onClick={handleGoToCart}
-                  >
-                    Go to Cart 
-                  </button>
-                  
-                </>
+                <button
+                  className="text-rose-500 border w-full px-4 py-2 rounded-lg"
+                  onClick={handleGoToCart}
+                >
+                  Go to Cart
+                </button>
               ) : (
                 <button
                   className="text-black border w-full px-4 py-2 rounded-lg"

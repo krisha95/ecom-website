@@ -11,6 +11,7 @@ import CategoryPage from "./AllButtons/CategoryPage";
 import MainPage from "./components/MainPage";
 import SearchResultsPage from "./components/SearchResultsPage";
 import LoginPage from "./components/LoginPage";
+import Loader from "./components/Loader";
 
 function App() {
   return (

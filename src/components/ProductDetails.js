@@ -55,7 +55,7 @@ const ProductDetails = () => {
                 alt={`Thumbnail of ${title}`}
                 className={`h-20 w-20 object-cover rounded-lg border-2 ${
                   selectedImage === image
-                    ? "border-blue-500"
+                    ? "border-pink-500"
                     : "border-gray-200"
                 } cursor-pointer`}
                 onClick={() => setSelectedImage(image)}

@@ -17,20 +17,17 @@ const Footer = () => {
           </h3>
           <ul className="space-y-2">
             {[
-              "Men",
-              "Women",
-              "Kids",
-              "Home & Living",
-              "Beauty",
-              "Gift Cards",
-              "Myntra Insider",
+              { name: "Men", path: "/category/mens-shirts" },
+              { name: "Women", path: "/category/womens-dresses" },
+              { name: "Home & Living", path: "/category/home-decoration" },
+              { name: "Beauty", path: "/category/beauty" },
             ].map((item) => (
-              <li key={item}>
+              <li key={item.name}>
                 <NavLink
-                  href="#"
+                  to={item.path}
                   className="text-gray-600 hover:text-gray-900 text-sm"
                 >
-                  {item}
+                  {item.name}
                 </NavLink>
               </li>
             ))}
@@ -56,7 +53,7 @@ const Footer = () => {
             ].map((item) => (
               <li key={item}>
                 <NavLink
-                  href="#"
+                  to="#"
                   className="text-gray-600 hover:text-gray-900 text-sm"
                 >
                   {item}
@@ -72,7 +69,7 @@ const Footer = () => {
           </h3>
           <div className="flex flex-col gap-2">
             <div className="flex">
-              <NavLink href="https://play.google.com/store">
+              <NavLink to="https://play.google.com/store">
                 <img
                   src={google}
                   alt="Google Play"
@@ -81,7 +78,7 @@ const Footer = () => {
                   className="h-10 w-auto"
                 />
               </NavLink>
-              <NavLink href="https://apps.apple.com">
+              <NavLink to="https://apps.apple.com">
                 <img
                   src={appstore}
                   alt="App Store"
@@ -101,7 +98,7 @@ const Footer = () => {
                 (Icon, index) => (
                   <NavLink
                     key={index}
-                    href="#"
+                    to="#"
                     className="text-gray-600 hover:text-gray-900"
                   >
                     <Icon className="h-5 w-5" />
@@ -163,7 +160,7 @@ const Footer = () => {
               "Cleartrip",
             ].map((item) => (
               <li key={item}>
-                <NavLink href="#" className="hover:text-gray-900">
+                <NavLink to="#" className="hover:text-gray-900">
                   {item}
                 </NavLink>
               </li>

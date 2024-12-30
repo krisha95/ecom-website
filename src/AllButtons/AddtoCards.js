@@ -4,49 +4,58 @@ import { DataContext } from "../hooks/DataContext";
 import { RxCross1 } from "react-icons/rx";
 import cartImage from "../Image/empty-bag.webp";
 import { NavLink } from "react-router-dom";
-import WishList from "./WishList";
+
 const AddToCards = () => {
   const { setProductdata, productdata, setWishlistdata } =
     useContext(DataContext);
   const [selectedIds, setSelectedIds] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [itemToRemove, setItemToRemove] = useState(null);
+  const [itemToRemove, setItemToRemove] = useState([]);
+
   const [counter, setCounter] = useState({});
 
   useEffect(() => {
+    window.scrollTo(0, 0); // Scroll to top
     setSelectedIds(productdata.map((item) => item.id));
   }, [productdata]);
 
-  const handleRemoveCartItem = (item) => {
+  const handleRemoveCartItems = () => {
     setIsModalVisible(true);
-    setItemToRemove(item.id);
+    setItemToRemove(selectedIds); // Pass all selected IDs
   };
 
-  const confirmRemoveItem = async () => {
-    if (itemToRemove) {
+  const confirmRemoveItems = async () => {
+    if (itemToRemove?.length > 0) {
       setIsModalVisible(false);
-      setItemToRemove(null);
-      setProductdata((prev) => prev.filter((item) => item.id !== itemToRemove));
-      setSelectedIds((prev) => prev.filter((id) => id !== itemToRemove));
+      setItemToRemove([]);
+      setProductdata((prev) =>
+        prev.filter((item) => !itemToRemove.includes(item.id))
+      );
+      setSelectedIds([]);
 
       try {
-        await fetch(`https://dummyjson.com/products/${itemToRemove}`, {
-          method: "DELETE",
-        });
+        for (const id of itemToRemove) {
+          await fetch(`https://dummyjson.com/products/${id}`, {
+            method: "DELETE",
+          });
+        }
       } catch (error) {
-        console.error("Error removing item:", error);
+        console.error("Error removing items:", error);
       }
     }
   };
 
-  const handleMoveToWishlist = () => {
-    const item = productdata.find((item) => item.id === itemToRemove);
-    setProductdata((prev) =>
-      prev.filter((product) => product.id !== itemToRemove)
+  const handleMoveToWishlistItems = () => {
+    const itemsToMove = productdata.filter((item) =>
+      selectedIds.includes(item.id)
     );
-    setWishlistdata((prev) => [...prev, item]);
+
+    setWishlistdata((prev) => [...prev, ...itemsToMove]);
+    setProductdata((prev) =>
+      prev.filter((item) => !selectedIds.includes(item.id))
+    );
+    setSelectedIds([]);
     setIsModalVisible(false);
-    setItemToRemove(null);
   };
 
   const handleMainCheckboxChange = (checked) => {
@@ -101,120 +110,130 @@ const AddToCards = () => {
       {productdata?.length > 0 ? (
         <>
           <div className="p-4">
-            <div className="flex items-center gap-2">
-              <input
-                type="checkbox"
-                checked={allSelected}
-                onChange={(e) => handleMainCheckboxChange(e.target.checked)}
-                className="form-checkbox w-5 h-5 text-pink-600"
-              />
-              <span className="text-sm text-gray-600">
-                {selectedCount}/{productdata.length} ITEMS SELECTED
-              </span>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
-            <div className="grid gap-6 lg:col-span-3">
-              {productdata.map((item) => (
-                <div
-                  key={item.id}
-                  className="border rounded-sm p-4 flex items-start relative bg-white"
-                >
+            <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+              <div className="grid gap-6 lg:col-span-3">
+                <div className="flex items-center gap-2 justify-between">
                   <input
                     type="checkbox"
-                    checked={selectedIds.includes(item.id)}
-                    onChange={(e) =>
-                      handleItemCheckboxChange(item.id, e.target.checked)
-                    }
-                    className="form-checkbox h-5 w-5 text-pink-600 absolute top-4 left-4"
+                    checked={allSelected}
+                    onChange={(e) => handleMainCheckboxChange(e.target.checked)}
+                    className="form-checkbox w-5 h-5 text-pink-600"
                   />
-
-                  <img
-                    src={item.thumbnail}
-                    alt={item.title}
-                    className="w-28 object-contain border bg-gray-100"
-                  />
-
-                  <div className="ml-6 flex-1">
-                    <h2 className="text-lg font-medium text-gray-800 truncate">
-                      {item.title}
-                    </h2>
-                    <div className="mt-2 text-sm text-gray-600 space-x-2">
-                      <span className="font-semibold text-gray-900">
-                        ₹
-                        {(
-                          item.price *
-                          (1 - item.discountPercentage / 100) *
-                          (counter[item.id] || 1)
-                        ).toFixed(2)}
-                      </span>
-                      <span className="line-through text-gray-400">
-                        ₹{(item.price * (counter[item.id] || 1)).toFixed(2)}
-                      </span>
-                      <span className="text-red-500">
-                        ({item.discountPercentage}% OFF)
+                  <div className="flex-1 flex items-center justify-between">
+                    <div>
+                      <span className="text-sm text-gray-600">
+                        {selectedCount}/{productdata.length} ITEMS SELECTED
                       </span>
                     </div>
-                    <div className="flex items-center justify-between mt-4 border rounded-lg w-28 p-2">
-                      <button
-                        className="px-2 py-1"
-                        onClick={() => IncItem(item.id)}
-                      >
-                        +
-                      </button>
-                      <div className="text-lg font-semibold text-center">
-                        {counter[item.id] || 1}
-                      </div>
-                      <button
-                        className="px-2 py-1"
-                        onClick={() => DecItem(item.id)}
-                      >
-                        -
-                      </button>
+                    <div className="text-gray-600 flex gap-3 text-bold text-sm">
+                      <span onClick={handleRemoveCartItems}>REMOVE</span>
+                      <span className="border"></span>
+                      <span onClick={handleMoveToWishlistItems}>
+                        MOVE TO WISHLIST
+                      </span>
                     </div>
                   </div>
-
-                  <button
-                    className="absolute right-4 top-4 text-gray-400"
-                    onClick={() => handleRemoveCartItem(item)}
+                </div>
+                {productdata.map((item) => (
+                  <div
+                    key={item.id}
+                    className="border rounded-sm p-4 flex items-start relative bg-white"
                   >
-                    <RxCross1 size={20} />
+                    <input
+                      type="checkbox"
+                      checked={selectedIds.includes(item.id)}
+                      onChange={(e) =>
+                        handleItemCheckboxChange(item.id, e.target.checked)
+                      }
+                      className="form-checkbox h-5 w-5 text-pink-600 absolute top-4 left-4"
+                    />
+
+                    <img
+                      src={item.thumbnail}
+                      alt={item.title}
+                      className="w-28 object-contain border bg-gray-100"
+                    />
+
+                    <div className="ml-6 flex-1">
+                      <h2 className="text-lg font-medium text-gray-800 truncate">
+                        {item.title}
+                      </h2>
+                      <div className="mt-2 text-sm text-gray-600 space-x-2">
+                        <span className="font-semibold text-gray-900">
+                          ₹
+                          {(
+                            item.price *
+                            (1 - item.discountPercentage / 100) *
+                            (counter[item.id] || 1)
+                          ).toFixed(2)}
+                        </span>
+                        <span className="line-through text-gray-400">
+                          ₹{(item.price * (counter[item.id] || 1)).toFixed(2)}
+                        </span>
+                        <span className="text-red-500">
+                          ({item.discountPercentage}% OFF)
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between mt-4 border rounded-lg w-28 p-2">
+                        <button
+                          className="px-2 py-1"
+                          onClick={() => IncItem(item.id)}
+                        >
+                          +
+                        </button>
+                        <div className="text-lg font-semibold text-center">
+                          {counter[item.id] || 1}
+                        </div>
+                        <button
+                          className="px-2 py-1"
+                          onClick={() => DecItem(item.id)}
+                        >
+                          -
+                        </button>
+                      </div>
+                    </div>
+
+                    <button
+                      className="absolute right-4 top-4 text-gray-400"
+                      onClick={() => handleRemoveCartItems(item)}
+                    >
+                      <RxCross1 size={20} />
+                    </button>
+                  </div>
+                ))}
+              </div>
+
+              <div className="lg:col-span-1">
+                <div className="bg-white p-6 rounded-lg shadow-md sticky top-4">
+                  <h3 className="font-semibold text-lg mb-4 text-gray-800">
+                    PRICE DETAILS ({selectedCount} Items)
+                  </h3>
+                  <div className="space-y-2 text-sm text-gray-600">
+                    <div className="flex justify-between">
+                      <span>Total MRP</span>
+                      <span>₹{mrp.toFixed(2)}</span>
+                    </div>
+                    <div className="flex justify-between text-green-600">
+                      <span>Discount on MRP</span>
+                      <span>-₹{discount.toFixed(2)}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Platform Fee</span>
+                      <span className="text-green-600">FREE</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span>Shipping Fee</span>
+                      <span className="text-green-600">FREE</span>
+                    </div>
+                    <div className="flex justify-between font-semibold pt-4 border-t border-gray-200">
+                      <span>Total Amount</span>
+                      <span>₹{totalAmount.toFixed(2)}</span>
+                    </div>
+                  </div>
+                  <button className="w-full mt-6 bg-pink-600 hover:bg-pink-700 text-white py-3 px-4 rounded-md">
+                    PLACE ORDER
                   </button>
                 </div>
-              ))}
-            </div>
-
-            <div className="lg:col-span-1">
-              <div className="bg-white p-6 rounded-lg shadow-md sticky top-4">
-                <h3 className="font-semibold text-lg mb-4 text-gray-800">
-                  PRICE DETAILS ({selectedCount} Items)
-                </h3>
-                <div className="space-y-2 text-sm text-gray-600">
-                  <div className="flex justify-between">
-                    <span>Total MRP</span>
-                    <span>₹{mrp.toFixed(2)}</span>
-                  </div>
-                  <div className="flex justify-between text-green-600">
-                    <span>Discount on MRP</span>
-                    <span>-₹{discount.toFixed(2)}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Platform Fee</span>
-                    <span className="text-green-600">FREE</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Shipping Fee</span>
-                    <span className="text-green-600">FREE</span>
-                  </div>
-                  <div className="flex justify-between font-semibold pt-4 border-t border-gray-200">
-                    <span>Total Amount</span>
-                    <span>₹{totalAmount.toFixed(2)}</span>
-                  </div>
-                </div>
-                <button className="w-full mt-6 bg-pink-600 hover:bg-pink-700 text-white py-3 px-4 rounded-md">
-                  PLACE ORDER
-                </button>
               </div>
             </div>
           </div>
@@ -225,12 +244,17 @@ const AddToCards = () => {
             <div className="flex justify-center items-center">
               <img src={cartImage} alt="cartImage" />
             </div>
-            <h3 className="text-center text-black">Hey, it feels so light!t</h3>
+            <h3 className="text-center text-black">Hey, it feels so light!</h3>
             <p className="text-center">
               There is nothing in your bag. Let's add some items.
             </p>
-            <NavLink to="/wishlist" className="flex justify-center items-center mt-8 ">
-              <button className="border border-rose-500 rounded-md  px-5 py-3">ADD ITEMS FROM WISHLIST</button>
+            <NavLink
+              to="/wishlist"
+              className="flex justify-center items-center mt-8 "
+            >
+              <button className="border border-rose-500 rounded-md px-5 py-3">
+                ADD ITEMS FROM WISHLIST
+              </button>
             </NavLink>
           </div>
         </>
@@ -238,9 +262,11 @@ const AddToCards = () => {
 
       <ConfirmationModal
         isVisible={isModalVisible}
-        onConfirm={confirmRemoveItem}
-        handleMoveToWishlist={handleMoveToWishlist}
-        selectedItem={productdata.find((item) => item.id === itemToRemove)}
+        onConfirm={confirmRemoveItems}
+        handleMoveToWishlist={handleMoveToWishlistItems}
+        selectedItems={productdata.filter((item) =>
+          selectedIds.includes(item.id)
+        )}
       />
     </div>
   );
